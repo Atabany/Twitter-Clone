@@ -11,9 +11,6 @@ import UIKit
 class LoginController: UIViewController {
     
 
-    
-    
-    
     // -------------------------------------------------
     // MARK: - Properties
     private let logoImage: UIImageView =  {
@@ -83,7 +80,18 @@ class LoginController: UIViewController {
     // MARK: - actions
     @objc
     func handleLogin() {
-        print("handle Login here")
+        guard let email = emailTextField.text else {return}
+        guard let password = passwordTextField.text else {return}
+        AuthService.shared.logUserIN(email: email, password: password) { (ref, error) in
+            if let err = error {
+                print("Debug: error ... \(err.localizedDescription)")
+                return
+            }
+            guard let window = UIApplication.shared.windows.first(where: {$0.isKeyWindow}) else {return}
+            guard let tab = window.rootViewController as? MainTabBarController else {return}
+            tab.configureForUser()
+            self.dismiss(animated: true, completion: nil)
+        }
     }
     
     @objc

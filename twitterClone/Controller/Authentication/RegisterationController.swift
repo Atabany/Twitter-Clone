@@ -7,15 +7,14 @@
 //
 
 import UIKit
+import Firebase
 
 class RegisterationController: UIViewController {
     
     // -------------------------------------------------
     // MARK: - Properties
-    
     let imagePicker = UIImagePickerController()
-    
-    
+    private var profileImage: UIImage? = nil
     
     private let plussPhotoImage: UIButton =  {
         let button = UIButton(type: .system)
@@ -24,7 +23,10 @@ class RegisterationController: UIViewController {
         button.tintColor = UIColor.white
         button.addTarget(self, action: #selector(handleAddProfileImage), for: .touchUpInside)
         return button
-     }()
+    }()
+    
+    
+    
     
     
     private let alreadyHaveAccountButton: UIButton = {
@@ -34,17 +36,23 @@ class RegisterationController: UIViewController {
     }()
     
     
+    
+    
+    
     private let signUpButton: UIButton = {
-           let button = UIButton(type: .system)
-           button.setTitleColor(.twitterBlue, for: .normal)
-           button.setTitle("Sign Up", for: .normal)
-           button.backgroundColor = UIColor.white
-           button.layer.cornerRadius = 5
-           button.clipsToBounds = true
-           button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-           button.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
-           return button
-       }()
+        let button = UIButton(type: .system)
+        button.setTitleColor(.twitterBlue, for: .normal)
+        button.setTitle("Sign Up", for: .normal)
+        button.backgroundColor = UIColor.white
+        button.layer.cornerRadius = 5
+        button.clipsToBounds = true
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        button.addTarget(self, action: #selector(handleSignUp), for: .touchUpInside)
+        return button
+    }()
+    
+    
+    
     
     
     
@@ -73,7 +81,7 @@ class RegisterationController: UIViewController {
     }()
     
     
-
+    
     
     
     
@@ -81,21 +89,21 @@ class RegisterationController: UIViewController {
         let tf = Utilities.textField(withPlaceholder: "Full Name")
         return tf
     }()
-
+    
     private var userNameTextField: UITextField  = {
         let tf = Utilities.textField(withPlaceholder: "Username")
         return tf
     }()
-
     
-
+    
+    
     private var emailTextField: UITextField  = {
         let tf = Utilities.textField(withPlaceholder: "Email")
         return tf
     }()
     
     private var passwordTextField: UITextField  = {
-         let tf = Utilities.textField(withPlaceholder: "Password")
+        let tf = Utilities.textField(withPlaceholder: "Password")
         tf.isSecureTextEntry = true
         return tf
     }()
@@ -116,18 +124,13 @@ class RegisterationController: UIViewController {
     // MARK: - Helpers
     func configureUI() {
         self.view.backgroundColor = .twitterBlue
-
+        
         
         self.view.addSubview(plussPhotoImage)
         self.plussPhotoImage.setDimensions(width: 128, height: 128)
         self.plussPhotoImage.centerX(inView: self.view, topAnchor: self.view.safeAreaLayoutGuide.topAnchor, paddingTop: 50)
-
-
-
         
-    
         let stack = UIStackView(arrangedSubviews: [
-            
             emailContainerView,
             passwordContainerView,
             fullNameContainerView,
@@ -138,20 +141,14 @@ class RegisterationController: UIViewController {
         stack.distribution = .fillEqually
         self.view.addSubview(stack)
         
-        
-        
-        
         stack.anchor(top: self.plussPhotoImage.bottomAnchor, left: self.view.leadingAnchor, right: self.view.trailingAnchor, paddingTop: 32, paddingLeft: 32, paddingRight: 32)
-
-        
-        
-    
-        
         
         view.addSubview(alreadyHaveAccountButton)
         alreadyHaveAccountButton.centerX(inView: self.view)
         alreadyHaveAccountButton.anchor(bottom: self.view.safeAreaLayoutGuide.bottomAnchor)
         
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
     }
     
     // -------------------------------------------------
@@ -164,11 +161,46 @@ class RegisterationController: UIViewController {
     
     @objc
     func handleSignUp() {
-
+        guard let profileImg = profileImage else {
+            print("Debug: Please select a profile image")
+            return
+        }
+        guard let email = emailTextField.text else {return}
+        guard let password = passwordTextField.text else {return}
+        guard let username = userNameTextField.text else {return}
+        guard let fullName = fullNameTextField.text else {return}
+        
+        let credentials = AuthCredential(email: email, fullName: fullName, password: password, username: username, profileImage: profileImg)
+        AuthService.shared.registerUser(credentials: credentials) { (error, ref) in
+            guard let window = UIApplication.shared.windows.first(where: {$0.isKeyWindow}) else {return}
+            guard let tab = window.rootViewController as? MainTabBarController else {return}
+            tab.configureForUser()
+            self.dismiss(animated: true, completion: nil)
+        }
     }
-    
+        
     @objc
     func handleAddProfileImage() {
         present(imagePicker, animated: true, completion: nil)
     }
+    
+    
+}
+
+
+
+extension RegisterationController: UIImagePickerControllerDelegate, UINavigationControllerDelegate   {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard  let profileImage = info[.editedImage] as? UIImage else { return }
+        self.profileImage = profileImage
+        plussPhotoImage.layer.cornerRadius = 128 / 2
+        plussPhotoImage.layer.masksToBounds = true
+        plussPhotoImage.imageView?.contentMode = .scaleToFill
+        plussPhotoImage.imageView?.clipsToBounds = true
+        plussPhotoImage.layer.borderColor = UIColor.white.cgColor
+        plussPhotoImage.layer.borderWidth = 3
+        self.plussPhotoImage.setImage(profileImage.withRenderingMode(.alwaysOriginal), for: .normal)
+        dismiss(animated: true, completion: nil)
+    }
+    
 }
