@@ -98,7 +98,7 @@ class MainTabBarController: UITabBarController {
     // MARK: - Helpers
     func configureUI() {
         view.addSubview(actionButton)
-        actionButton.anchor(top: nil, left: nil, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, right: self.view.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 64, paddingRight: 16, width: 56, height: 56)
+        actionButton.anchor(top: nil, leading: nil, bottom: self.view.safeAreaLayoutGuide.bottomAnchor, trailing: self.view.trailingAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 64, paddingRight: 16, width: 56, height: 56)
         actionButton.layer.cornerRadius = 56 / 2
         
     }
@@ -108,7 +108,7 @@ class MainTabBarController: UITabBarController {
     
     func configureViewControllers() {
         
-        let feed = FeedController()
+        let feed = FeedController(collectionViewLayout: UICollectionViewFlowLayout())
         let navFeed = templateNav(image: UIImage(named: "home_unselected")!, rootViewController: feed)
         
         let explore = ExploreController()
@@ -116,8 +116,6 @@ class MainTabBarController: UITabBarController {
         
         let notifications = NotificationsController()
         let navNotifications = templateNav(image: UIImage(named: "like_unselected")!, rootViewController: notifications)
-        
-        
         
         let conversations = ConversationsController()
         let navConversations = templateNav(image: UIImage(named: "ic_mail_outline_white_2x-1")!, rootViewController: conversations)

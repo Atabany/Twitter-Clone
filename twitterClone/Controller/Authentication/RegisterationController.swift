@@ -141,7 +141,7 @@ class RegisterationController: UIViewController {
         stack.distribution = .fillEqually
         self.view.addSubview(stack)
         
-        stack.anchor(top: self.plussPhotoImage.bottomAnchor, left: self.view.leadingAnchor, right: self.view.trailingAnchor, paddingTop: 32, paddingLeft: 32, paddingRight: 32)
+        stack.anchor(top: self.plussPhotoImage.bottomAnchor, leading: self.view.leadingAnchor, trailing: self.view.trailingAnchor, paddingTop: 32, paddingLeft: 32, paddingRight: 32)
         
         view.addSubview(alreadyHaveAccountButton)
         alreadyHaveAccountButton.centerX(inView: self.view)

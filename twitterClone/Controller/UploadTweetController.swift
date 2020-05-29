@@ -29,9 +29,10 @@ class UploadTweetController: UIViewController {
     
     private lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
+        iv.contentMode = .scaleAspectFit
+        iv.clipsToBounds = true
         iv.setDimensions(width: 48, height: 48)
         iv.layer.cornerRadius = 48/2
-        iv.clipsToBounds = true
         iv.backgroundColor = .twitterBlue
         return iv
     }()
@@ -100,8 +101,8 @@ class UploadTweetController: UIViewController {
 
         stack.anchor(
                     top: view.safeAreaLayoutGuide.topAnchor,
-                    left: view.leadingAnchor,
-                    right: view.trailingAnchor,
+                    leading: view.leadingAnchor,
+                    trailing: view.trailingAnchor,
                     paddingTop: 16,
                     paddingLeft: 16,
                     paddingRight: 16)

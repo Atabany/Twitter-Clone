@@ -125,7 +125,7 @@ class LoginController: UIViewController {
         stack.distribution = .fillEqually
         self.view.addSubview(stack)
         
-        stack.anchor(top: self.logoImage.bottomAnchor, left: self.view.leadingAnchor, right: self.view.trailingAnchor, paddingTop: 30, paddingLeft: 32, paddingRight: 32)
+        stack.anchor(top: self.logoImage.bottomAnchor, leading: self.view.leadingAnchor, trailing: self.view.trailingAnchor, paddingTop: 30, paddingLeft: 32, paddingRight: 32)
         
         
         

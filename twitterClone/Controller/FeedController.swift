@@ -8,7 +8,10 @@
 
 import UIKit
 import SDWebImage
-class FeedController: UIViewController {
+
+private let reuseIdentifier = "cellid"
+
+class FeedController: UICollectionViewController {
 
     // -------------------------------------------------
     // MARK: - Properties
@@ -23,17 +26,24 @@ class FeedController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        fetchTweets()
     }
 
     // -------------------------------------------------
     // MARK: - Helpers
     
     func configureUI() {
+        self.collectionView.backgroundColor = .white
         self.view.backgroundColor = .white
+        
+        
         let imageView = UIImageView(image: UIImage(named: "twitter_logo_blue")!)
         imageView.contentMode = .scaleAspectFit
         imageView.setDimensions(width: 44, height: 44)
         self.navigationItem.titleView = imageView
+        
+        
+        collectionView.register(TweetCell.self, forCellWithReuseIdentifier: reuseIdentifier)
     }
     
     
@@ -49,7 +59,39 @@ class FeedController: UIViewController {
     }
     
     
-    
-
+    func fetchTweets() {
+        TweetService.shared.fetchTweets { (tweets) in
+            print("Debug TWeets : \(tweets) ")
+        }
+    }
 
 }
+
+
+extension FeedController{
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TweetCell
+        return cell
+    }
+
+
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    
+}
+
+
+
+extension FeedController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: self.collectionView.frame.size.width , height: 90)
+    }
+}
+

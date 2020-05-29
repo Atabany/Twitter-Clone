@@ -21,19 +21,19 @@ class Utilities {
         let iv = UIImageView()
         iv.image = image
         view.addSubview(iv)
-        iv.anchor(left: view.leadingAnchor, bottom: view.bottomAnchor,
+        iv.anchor(leading: view.leadingAnchor, bottom: view.bottomAnchor,
                   paddingLeft: 8, paddingBottom: 8)
         iv.setDimensions(width: 24, height: 24)
         
         view.addSubview(textField)
-        textField.anchor(left: iv.trailingAnchor, bottom: view.bottomAnchor, right: view.trailingAnchor, paddingLeft: 8, paddingBottom: 8)
+        textField.anchor(leading: iv.trailingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, paddingLeft: 8, paddingBottom: 8)
         
         
         
         let dividerView = UIView()
         dividerView.backgroundColor = .white
         view.addSubview(dividerView)
-        dividerView.anchor(left: view.leadingAnchor, bottom: view.bottomAnchor, right: view.trailingAnchor, paddingLeft: 8, height: 0.75)
+        dividerView.anchor(leading: view.leadingAnchor, bottom: view.bottomAnchor, trailing: view.trailingAnchor, paddingLeft: 8, height: 0.75)
         
         return view
     }

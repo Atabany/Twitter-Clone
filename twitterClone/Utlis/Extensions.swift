@@ -10,9 +10,9 @@ import UIKit
 
 extension UIView {
     func anchor(top: NSLayoutYAxisAnchor? = nil,
-                left: NSLayoutXAxisAnchor? = nil,
+                leading: NSLayoutXAxisAnchor? = nil,
                 bottom: NSLayoutYAxisAnchor? = nil,
-                right: NSLayoutXAxisAnchor? = nil,
+                trailing: NSLayoutXAxisAnchor? = nil,
                 paddingTop: CGFloat = 0,
                 paddingLeft: CGFloat = 0,
                 paddingBottom: CGFloat = 0,
@@ -26,7 +26,7 @@ extension UIView {
             topAnchor.constraint(equalTo: top, constant: paddingTop).isActive = true
         }
         
-        if let left = left {
+        if let left = leading {
             leadingAnchor.constraint(equalTo: left, constant: paddingLeft).isActive = true
         }
         
@@ -34,7 +34,7 @@ extension UIView {
             bottomAnchor.constraint(equalTo: bottom, constant: -paddingBottom).isActive = true
         }
         
-        if let right = right {
+        if let right = trailing {
             trailingAnchor.constraint(equalTo: right, constant: -paddingRight).isActive = true
         }
         
@@ -80,8 +80,8 @@ extension UIView {
     
     func addConstraintsToFillView(_ view: UIView) {
         translatesAutoresizingMaskIntoConstraints = false
-        anchor(top: view.topAnchor, left: view.leadingAnchor,
-               bottom: view.bottomAnchor, right: view.trailingAnchor)
+        anchor(top: view.topAnchor, leading: view.leadingAnchor,
+               bottom: view.bottomAnchor, trailing: view.trailingAnchor)
     }
 }
 
