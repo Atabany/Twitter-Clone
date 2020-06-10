@@ -56,7 +56,7 @@ class TweetCell: UICollectionViewCell {
         profileImageView.anchor(
             top: topAnchor,
             leading: leadingAnchor,
-            paddingTop: 12,
+            paddingTop: 8,
             paddingLeft: 8
         )
         
@@ -78,13 +78,24 @@ class TweetCell: UICollectionViewCell {
         addSubview(underlineView)
         underlineView.anchor(leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, height: 1)
         
-        stack.anchor(top: profileImageView.topAnchor, leading: profileImageView.trailingAnchor, bottom: underlineView.topAnchor, trailing: trailingAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 12, paddingRight: 12)
+        stack.anchor(top: profileImageView.topAnchor, leading: profileImageView.trailingAnchor, trailing: trailingAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 12, paddingRight: 12)
         
         
         
-        let actionStack = 
-        
-        
+        let actionStack =  UIStackView(arrangedSubviews: [
+            commentButton,
+            retweetButton,
+            likeButton,
+            shareButton
+        ])
+        actionStack.axis = .horizontal
+        actionStack.spacing = 72
+        addSubview(actionStack)
+
+        actionStack.anchor(bottom: bottomAnchor, paddingBottom: 8)
+        actionStack.centerX(inView: self)
+
+
     }
     
     required init?(coder: NSCoder) {
@@ -107,7 +118,7 @@ class TweetCell: UICollectionViewCell {
     
     private lazy var commentButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "like"), for: .normal)
+        button.setImage(UIImage(named: "comment"), for: .normal)
         button.tintColor = .darkGray
         button.setDimensions(width: 20, height: 20)
         button.addTarget(self, action: #selector(handleCommentTapped), for: .touchUpInside)
@@ -117,7 +128,7 @@ class TweetCell: UICollectionViewCell {
     
     private lazy var retweetButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "like"), for: .normal)
+        button.setImage(UIImage(named: "retweet"), for: .normal)
         button.tintColor = .darkGray
         button.setDimensions(width: 20, height: 20)
         button.addTarget(self, action: #selector(handleRetweetTapped), for: .touchUpInside)
@@ -127,7 +138,7 @@ class TweetCell: UICollectionViewCell {
     
     private lazy var shareButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "like"), for: .normal)
+        button.setImage(UIImage(named: "share"), for: .normal)
         button.tintColor = .darkGray
         button.setDimensions(width: 20, height: 20)
         button.addTarget(self, action: #selector(handleShareTapped), for: .touchUpInside)
