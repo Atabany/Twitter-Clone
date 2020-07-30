@@ -13,6 +13,12 @@ class TweetCell: UICollectionViewCell {
     // -------------------------------------------------
     // MARK: - Properties
     
+    var tweet: Tweet? {
+        didSet {
+            configure()
+        }
+    }
+    
     private lazy var profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
@@ -35,11 +41,6 @@ class TweetCell: UICollectionViewCell {
     
     private let infoLabel: UILabel = UILabel()
 
-    
-    
-    
-    
-    
     // -------------------------------------------------
     // MARK: - LifeCycle
     
@@ -79,22 +80,20 @@ class TweetCell: UICollectionViewCell {
         underlineView.anchor(leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, height: 1)
         
         stack.anchor(top: profileImageView.topAnchor, leading: profileImageView.trailingAnchor, trailing: trailingAnchor, paddingTop: 0, paddingLeft: 12, paddingBottom: 12, paddingRight: 12)
-        
-        
-        
+
         let actionStack =  UIStackView(arrangedSubviews: [
             commentButton,
             retweetButton,
             likeButton,
             shareButton
         ])
+        
         actionStack.axis = .horizontal
         actionStack.spacing = 72
         addSubview(actionStack)
 
         actionStack.anchor(bottom: bottomAnchor, paddingBottom: 8)
         actionStack.centerX(inView: self)
-
 
     }
     
@@ -105,7 +104,6 @@ class TweetCell: UICollectionViewCell {
     
     // -------------------------------------------------
     // MARK: - Buttons
-    
     private lazy var likeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "like"), for: .normal)
@@ -135,7 +133,7 @@ class TweetCell: UICollectionViewCell {
         return button
     }()
     
-    
+
     private lazy var shareButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "share"), for: .normal)
@@ -144,16 +142,12 @@ class TweetCell: UICollectionViewCell {
         button.addTarget(self, action: #selector(handleShareTapped), for: .touchUpInside)
         return button
     }()
-    
-    
-  
-    
+
     
     
     
     // -------------------------------------------------
     // MARK: - Selectors
-    
     @objc
     func handleLikeTapped() {
         
@@ -182,13 +176,16 @@ class TweetCell: UICollectionViewCell {
         
     }
     
-
-    
-    
-    
     
     // -------------------------------------------------
     // MARK: - Helpers
+    func configure() {
+        guard let tweet = self.tweet else {return}
+        let viewModel = TweetViewModel(tweet: tweet)
+        captionLabel.text = tweet.caption
+        infoLabel.attributedText = viewModel.userInfoText
+        profileImageView.sd_setImage(with: viewModel.profileImageUrl)
+    }
     
     
     

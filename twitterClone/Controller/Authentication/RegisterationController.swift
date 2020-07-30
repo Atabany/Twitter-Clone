@@ -170,7 +170,7 @@ class RegisterationController: UIViewController {
         guard let username = userNameTextField.text else {return}
         guard let fullName = fullNameTextField.text else {return}
         
-        let credentials = AuthCredential(email: email, fullName: fullName, password: password, username: username, profileImage: profileImg)
+        let credentials = AuthCredential(email: email, fullName: fullName, password: password, username: username.lowercased(), profileImage: profileImg)
         AuthService.shared.registerUser(credentials: credentials) { (error, ref) in
             guard let window = UIApplication.shared.windows.first(where: {$0.isKeyWindow}) else {return}
             guard let tab = window.rootViewController as? MainTabBarController else {return}

@@ -13,7 +13,7 @@ import Firebase
 struct TweetService {
     
     static let shared = TweetService()
-
+    
     func uploadTweet(caption: String, completion: @escaping ((Error?, DatabaseReference) -> Void)) {
         guard let uid = Auth.auth().currentUser?.uid else {return}
         let values = [
@@ -22,7 +22,7 @@ struct TweetService {
             "retweets": 0,
             "uid": uid,
             "timestamp": Int(Date().timeIntervalSince1970)
-        ] as [String: Any]
+            ] as [String: Any]
         REF_TWEETS.childByAutoId().updateChildValues(values, withCompletionBlock: completion)
     }
     
@@ -32,11 +32,14 @@ struct TweetService {
         REF_TWEETS.observe(.childAdded) { (snapshot) in
             print("Debug: snapshot \(snapshot)")
             guard let dictionary = snapshot.value as? [String: Any] else { return }
-            let tweet = Tweet(tweetID: snapshot.key, dictionary: dictionary)
-            tweets.append(tweet)
-            completion(tweets)
-
+            guard let uid = dictionary["uid"] as? String else { return }
+            let tweetID = snapshot.key
+            UserService.shared.fetchUser(uid:uid ) { (user) in
+                let tweet = Tweet(user: user, tweetID: tweetID , dictionary: dictionary)
+                tweets.append(tweet)
+                completion(tweets)
             }
+        }
     }
     
     

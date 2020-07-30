@@ -10,14 +10,13 @@ import Firebase
 
 struct UserService {
     static let shared = UserService()
-    func fetchUser(completion: @escaping (User)->()) {
-        if let user = Auth.auth().currentUser {
-            let uid = user.uid
+    func fetchUser(uid: String, completion: @escaping (User)->()) {
             REF_USERS.child(uid).observeSingleEvent(of: .value) { (snapshot) in
                 guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
                 let user = User(dict: dictionary, uid: uid)
                 completion(user)
             }
-        }
     }
+    
+    
 }
