@@ -24,6 +24,10 @@ class ProfileHeader: UICollectionReusableView {
     weak var delegate: ProfileHeaderDelegate?
     
     
+    private let filterBar = ProfileFilterView()
+    
+    
+    
     
     private lazy var  containerView: UIView = {
         
@@ -106,14 +110,20 @@ class ProfileHeader: UICollectionReusableView {
     }()
     
 
-    
-
+        
+    private let underlineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .twitterBlue
+        return view
+    }()
     
     
     // -------------------------------------------------
     // MARK: -  Life cycle
     override init(frame: CGRect) {
         super.init(frame: frame)
+        filterBar.delegate = self
+        
         addSubview(containerView)
         containerView.anchor(top: topAnchor, leading: leadingAnchor, trailing: trailingAnchor, height: 108)
         
@@ -144,6 +154,20 @@ class ProfileHeader: UICollectionReusableView {
         userDetailsStackView.anchor(top: profileImageView.bottomAnchor, leading: leadingAnchor, trailing: trailingAnchor, paddingTop: 8, paddingLeft: 12, paddingRight: 12)
         
         
+        
+        addSubview(filterBar)
+        
+        filterBar.anchor(leading: leadingAnchor, bottom: bottomAnchor, trailing: trailingAnchor, height: 50)
+        
+        
+        
+        addSubview(underlineView)
+        underlineView.anchor(leading: leadingAnchor, bottom: bottomAnchor, width: frame.width / 3, height: 2)
+        
+        
+        
+        
+        
     }
     
     
@@ -167,4 +191,19 @@ class ProfileHeader: UICollectionReusableView {
         
     }
     
+}
+
+// -------------------------------------------------
+// MARK: - ProfileFilterviewDelegate
+extension ProfileHeader: ProfileFilterviewDelegate {
+    func filterView(_ view: ProfileFilterView, didSelect indexPath: IndexPath) {
+        guard let cell = view.collectionView.cellForItem(at: indexPath) as? ProfileFilterCell else {
+            return
+        }
+        
+        let xPosition = cell.frame.origin.x
+        UIView.animate(withDuration: 0.3) {
+            self.underlineView.frame.origin.x = xPosition
+        }
+    }
 }
