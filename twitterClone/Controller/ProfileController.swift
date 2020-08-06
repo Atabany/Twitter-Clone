@@ -43,10 +43,7 @@ class ProfileController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureCollectionView()
-        
-        print("DEBUG: User is \(user?.username)")
     }
     
 

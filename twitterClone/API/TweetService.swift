@@ -23,7 +23,13 @@ struct TweetService {
             "uid": uid,
             "timestamp": Int(Date().timeIntervalSince1970)
             ] as [String: Any]
-        REF_TWEETS.childByAutoId().updateChildValues(values, withCompletionBlock: completion)
+
+        REF_TWEETS.childByAutoId().updateChildValues(values) { (error, ref) in
+            guard let tweetId = ref.key else {return}
+            REF_USERS_TWEETS.child(uid).updateChildValues([tweetId:1], withCompletionBlock: completion)
+        }
+        
+        
     }
     
     

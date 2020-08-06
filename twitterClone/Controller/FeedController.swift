@@ -32,6 +32,12 @@ class FeedController: UICollectionViewController {
         configureUI()
         fetchTweets()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.barStyle = .default
+        navigationController?.navigationBar.isHidden = false
+    }
 
     // -------------------------------------------------
     // MARK: - Helpers
@@ -62,14 +68,12 @@ class FeedController: UICollectionViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: profileImageView)
     }
     
-    
     func fetchTweets() {
         TweetService.shared.fetchTweets { (tweets) in
             self.tweets  = tweets
             self.collectionView.reloadData()
         }
     }
-    
     
 
 }
