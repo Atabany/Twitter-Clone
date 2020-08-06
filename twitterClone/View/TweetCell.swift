@@ -10,7 +10,7 @@ import UIKit
 
 
 protocol TweetCellDelegate {
-    func imageDidPressed(tweet: Tweet)
+    func imageDidPressed(_ cell: TweetCell)
 }
 
 
@@ -202,8 +202,8 @@ class TweetCell: UICollectionViewCell {
     
     @objc
     func handleProfileImageTapped() {
-        guard let tweet = self.tweet else {return}
-        delegate?.imageDidPressed(tweet: tweet)
+//        guard let tweet = self.tweet else {return}
+        delegate?.imageDidPressed(self)
     }
     
     

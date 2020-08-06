@@ -19,7 +19,7 @@ class ProfileController: UICollectionViewController {
     // -------------------------------------------------
     // MARK: - Properties
     
-    
+    private let user: User?
     
     
     
@@ -30,11 +30,23 @@ class ProfileController: UICollectionViewController {
     // -------------------------------------------------
     // MARK: - LifeCycle
     
+    
+    init(user: User) {
+        self.user = user
+        super.init(collectionViewLayout: UICollectionViewFlowLayout())
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureCollectionView()
         
+        print("DEBUG: User is \(user?.username)")
     }
     
 
@@ -46,10 +58,6 @@ class ProfileController: UICollectionViewController {
     }
     
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        navigationController?.navigationBar.isHidden = false
-    }
     
     
     
@@ -102,6 +110,7 @@ extension ProfileController {
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as! ProfileHeader
         header.delegate = self
+        header.user = self.user
         return header
     }
     

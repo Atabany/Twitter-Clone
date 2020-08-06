@@ -76,6 +76,8 @@ class MainTabBarController: UITabBarController {
     
     
     func configureForUser() {
+        
+//        logUserOut()
         configureViewControllers()
         configureUI()
         fetchUser()

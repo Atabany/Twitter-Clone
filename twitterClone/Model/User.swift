@@ -7,12 +7,21 @@
 //
 
 import Foundation
+import FirebaseAuth
+
 struct User {
     let fullname: String
     let username: String
     var profileImageUrl: URL?
     let email: String
     let uid: String
+    
+    
+    var isCurrentUser: Bool {
+        return Auth.auth().currentUser?.uid ?? ""  == uid
+        
+    }
+    
     
     init(dict: [String: AnyObject], uid: String) {
         self.fullname = (dict["fullname"]  as? String) ?? ""
