@@ -17,6 +17,14 @@ class ProfileFilterCell: UICollectionViewCell {
     // -------------------------------------------------
     // MARK: - Properties
     
+    var filterOption: ProfileFilterOption? {
+        didSet {
+            self.configure()
+        }
+    }
+
+    
+    
     
     let titleLabel: UILabel = {
         let label = UILabel()
@@ -48,5 +56,13 @@ class ProfileFilterCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // -------------------------------------------------
+    // MARK: - Helpers
+    
+    func configure() {
+        guard let option = self.filterOption else {return}
+        titleLabel.text = option.description
     }
 }
