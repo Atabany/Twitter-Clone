@@ -55,6 +55,17 @@ class ExploreController: UITableViewController {
     }
 
     
+    
+    
+     override func viewWillAppear(_ animated: Bool) {
+         super.viewWillAppear(animated)
+         navigationController?.navigationBar.barStyle = .default
+         navigationController?.navigationBar.isHidden = false
+     }
+    
+    
+    
+    
     private func configureTableView() {
         
         let footerView = UIView()
@@ -98,19 +109,10 @@ class ExploreController: UITableViewController {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-
 }
 
 
 extension ExploreController {
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return  inSearchMode ?  filteredUsers.count :  users.count
     }
@@ -120,8 +122,6 @@ extension ExploreController {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifer, for: indexPath) as? UserCell else {
             return UITableViewCell()
         }
-        
-        
         let user =  inSearchMode ?  self.filteredUsers[indexPath.row] :   self.users[indexPath.row]
         cell.user = user
         return cell
@@ -131,27 +131,19 @@ extension ExploreController {
         let user =  inSearchMode ?  self.filteredUsers[indexPath.row] :   self.users[indexPath.row]
         let controller = ProfileController(user: user)
         self.navigationController?.pushViewController(controller, animated: true)
-
     }
     
 }
 extension ExploreController:UISearchResultsUpdating  {
 
     func updateSearchResults(for searchController: UISearchController) {
-
         guard let  searchText = searchController.searchBar.text?.lowercased() else {
             return
         }
-
-        print("Debug: Search Text is \(searchText)")
-
         self.filteredUsers = users.filter {
             return $0.fullname.lowercased().contains(searchText) || $0.username.lowercased().contains(searchText)
         }
-        
-        
         self.tableView.reloadData()
-
     }
     
     
