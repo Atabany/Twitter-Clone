@@ -14,18 +14,18 @@ private let headerIdentifier = "ProfileHeader"
 
 
 class ProfileController: UICollectionViewController {
-
+    
     
     // -------------------------------------------------
     // MARK: - Properties
     
-    private let user: User?
+    private var user: User!
     private var tweets = [Tweet]() {
         didSet {
             self.collectionView.reloadData()
         }
     }
-
+    
     
     
     
@@ -50,9 +50,10 @@ class ProfileController: UICollectionViewController {
         super.viewDidLoad()
         configureCollectionView()
         fetchTwetes()
+        checkIfUserIsFollowed()
     }
     
-
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -87,13 +88,19 @@ class ProfileController: UICollectionViewController {
     }
     // -------------------------------------------------
     // MARK: - API
-    
-    
     func fetchTwetes() {
         guard let user = self.user else {return}
         TweetService.shared.fetchTweets(forUser: user) { (tweets) in
             // THE TABLEVIEW STUFF
             self.tweets = tweets
+        }
+    }
+    
+    
+    func checkIfUserIsFollowed() {
+        UserService.shared.checkIfUserIsFollowed(uid: user.uid) { (isFollowed) in
+            self.user.isFollowed = isFollowed
+            self.collectionView.reloadData()
         }
     }
     
@@ -110,7 +117,7 @@ extension ProfileController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! TweetCell
-//        cell.delegate = self
+        //        cell.delegate = self
         cell.tweet = tweets[indexPath.row]
         return cell
     }
@@ -134,13 +141,34 @@ extension ProfileController {
 
 extension ProfileController: ProfileHeaderDelegate {
     func handleEditProfileFollow(_ header: ProfileHeader) {
-          print("Debug: Should foll the user")
         
         
-        UserService.shared.followUser(uid: user?.uid ?? "") { (_, _) in
         
-            
+        if user.isCurrentUser {
+            print("DEBUG: show edit profile controller ")
+            return
         }
+        
+        
+        
+        if user.isFollowed {
+            UserService.shared.unfollowUser(uid: user?.uid ?? "") { (_, _) in
+                self.user.isFollowed = false
+                self.collectionView.reloadData()
+            }
+        } else {
+            
+            
+            UserService.shared.followUser(uid: user?.uid ?? "") { (_, _) in
+                self.user.isFollowed = true
+                self.collectionView.reloadData()
+            }
+        }
+        
+        
+        
+        
+        
     }
     
     func backButtonDidPressed() {
@@ -159,9 +187,9 @@ extension ProfileController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-          return CGSize(width: view.frame.width, height: 350)
-      }
-      
+        return CGSize(width: view.frame.width, height: 350)
+    }
+    
     
     
     

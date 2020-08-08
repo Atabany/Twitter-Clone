@@ -19,8 +19,10 @@ struct User {
     
     var isCurrentUser: Bool {
         return Auth.auth().currentUser?.uid ?? ""  == uid
-        
     }
+    
+    var isFollowed = false
+      
     
     
     init(dict: [String: AnyObject], uid: String) {

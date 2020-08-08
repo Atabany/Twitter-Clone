@@ -39,7 +39,7 @@ class UploadTweetController: UIViewController {
     
 
     
-    private let user: User?
+    private var user: User?
     
     private let captionTextView = CaptionTextView()
     

@@ -60,7 +60,16 @@ struct ProfileHeaderViewModel {
         if user.isCurrentUser {
             return "Edit Profile"
         } else {
-            return "Follow"
+            
+            if !user.isFollowed  && !user.isCurrentUser {
+                return "Follow" 
+            }
+            
+            if user.isFollowed  {
+                return "Following"
+            }
+            
+            return "Loading"
         }
     }
     
