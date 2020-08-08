@@ -249,7 +249,7 @@ class ProfileHeader: UICollectionReusableView {
         followersLabel.attributedText = viewModel.followersString
         
         fullNameLabel.text = user.fullname
-        userNameLabel.text = "@\(user.username)"
+        userNameLabel.text = viewModel.usernameText
         profileImageView.sd_setImage(with: user.profileImageUrl)
         
         editProfilefollowButton.setTitle(viewModel.actionButtonTitle, for: .normal)

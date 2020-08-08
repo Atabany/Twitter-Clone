@@ -40,6 +40,7 @@ struct ProfileHeaderViewModel {
     
     init(user: User) {
         self.user = user
+        self.usernameText = "@\(user.username)"
     }
     
     var followersString: NSAttributedString? {
@@ -52,6 +53,9 @@ struct ProfileHeaderViewModel {
     }
     
     
+    let usernameText: String
+    
+    
     var actionButtonTitle: String {
         if user.isCurrentUser {
             return "Edit Profile"
@@ -59,6 +63,11 @@ struct ProfileHeaderViewModel {
             return "Follow"
         }
     }
+    
+    
+    
+    
+    
     
     
     func attributedText(withValue value: Int, text: String) -> NSAttributedString {

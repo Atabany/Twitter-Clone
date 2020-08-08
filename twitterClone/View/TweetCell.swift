@@ -40,8 +40,8 @@ class TweetCell: UICollectionViewCell {
         iv.clipsToBounds = true
         iv.setDimensions(width: 48, height: 48)
         iv.layer.cornerRadius = 48/2
-        iv.backgroundColor = .twitterBlue
-        
+        iv.backgroundColor = .lightGray
+
         
         
         
