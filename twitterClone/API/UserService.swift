@@ -11,11 +11,11 @@ import Firebase
 struct UserService {
     static let shared = UserService()
     func fetchUser(uid: String, completion: @escaping (User)->()) {
-            REF_USERS.child(uid).observeSingleEvent(of: .value) { (snapshot) in
-                guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
-                let user = User(dict: dictionary, uid: uid)
-                completion(user)
-            }
+        REF_USERS.child(uid).observeSingleEvent(of: .value) { (snapshot) in
+            guard let dictionary = snapshot.value as? [String: AnyObject] else {return}
+            let user = User(dict: dictionary, uid: uid)
+            completion(user)
+        }
     }
     
     
@@ -30,7 +30,15 @@ struct UserService {
             completion(users)
         }
     }
-
+    
+    
+    func followUser(uid: String, completion: @escaping(Error?, DatabaseReference) -> Void) {
+        guard let currentUid = Auth.auth().currentUser?.uid else {return}
+        REF_USERS_FOLLOWING.child(currentUid).updateChildValues([uid: 1]) { (err, ref) in
+            
+            REF_USERS_FOLLOWERS.child(uid).updateChildValues([currentUid: 1], withCompletionBlock: completion)
+        }
+    }
     
     
 }

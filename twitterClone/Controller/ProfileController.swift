@@ -133,6 +133,16 @@ extension ProfileController {
 
 
 extension ProfileController: ProfileHeaderDelegate {
+    func handleEditProfileFollow(_ header: ProfileHeader) {
+          print("Debug: Should foll the user")
+        
+        
+        UserService.shared.followUser(uid: user?.uid ?? "") { (_, _) in
+        
+            
+        }
+    }
+    
     func backButtonDidPressed() {
         self.navigationController?.popViewController(animated: true)
     }
