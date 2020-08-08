@@ -44,12 +44,12 @@ struct ProfileHeaderViewModel {
     }
     
     var followersString: NSAttributedString? {
-        return attributedText(withValue: 2, text: "Followers")
+        return attributedText(withValue: user.stats?.followers ?? 0, text: "Followers")
     }
     
     
     var followingString: NSAttributedString? {
-        return attributedText(withValue: 4, text: "Following")
+        return attributedText(withValue: user.stats?.followings ?? 0, text: "Following")
     }
     
     
@@ -61,13 +61,17 @@ struct ProfileHeaderViewModel {
             return "Edit Profile"
         } else {
             
-            if !user.isFollowed  && !user.isCurrentUser {
+            
+            
+            if !user.isFollowed {
                 return "Follow" 
             }
+            
             
             if user.isFollowed  {
                 return "Following"
             }
+            
             
             return "Loading"
         }

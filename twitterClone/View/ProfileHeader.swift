@@ -256,9 +256,6 @@ class ProfileHeader: UICollectionReusableView {
         
         editProfilefollowButton.setTitle(viewModel.actionButtonTitle, for: .normal)
         
-        
-        
-        
     }
     
 
